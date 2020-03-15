@@ -1,18 +1,18 @@
 #!/bin/bash
-#Emile Ken
+#Description: script to clean up docker image
+#Author: Emile Ken
+#Date: March 2020
 
-
-# Cleanup docker files: containers and images.
+# Cleanup docker files: Images.
 
 
 echo -e "\n\n =========== Starting the Docker Clean Up Script ================== \n\n"
 
 
-docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-
-
-docker volume rm $(docker volume ls -qf dangling=true)
-
+for i in $(docker images | awk '{print $3}' | grep -v IMAGE);
+do
+docker rmi -f ${i}
+done
 
 echo -n "\n\n ============================ Clean Up Completed ============================= \n\n"
 
